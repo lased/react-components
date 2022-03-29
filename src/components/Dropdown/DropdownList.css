@@ -1,0 +1,22 @@
+.dropdown__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  display: none;
+}
+
+.dropdown__list .dropdown__list {
+  left: 100%;
+  top: 0;
+}
+
+.dropdown__item {
+  position: relative;
+}
+
+.dropdown__item:hover > .dropdown__list {
+  display: block;
+}
