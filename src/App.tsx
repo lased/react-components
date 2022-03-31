@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Dropdown, { IDropdownList } from './components/Dropdown/Dropdown';
-import Calendar from './Calendar';
+import { Calendar } from './components';
 
 import './App.css';
 
@@ -27,7 +27,7 @@ function App() {
         <Dropdown list={list}>
           drop
         </Dropdown>
-        {/* <Calendar /> */}
+        <Calendar />
       </header>
     </div>
   );
