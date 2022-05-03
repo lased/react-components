@@ -5,7 +5,7 @@ import axios, {
   AxiosRequestConfig,
   AxiosResponse
 } from 'axios';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useErrorStore } from 'store/error';
 
@@ -23,7 +23,7 @@ const useAxios = <T>(
     data: null as AxiosResponse<T> | null
   });
   const errorStore = useErrorStore();
-  const queryInstance = useRef<AxiosPromise<any> | null>(null);
+  const abortController = useRef(new AbortController());
 
   const fetching = () => {
     setMetadata((old) => ({
@@ -36,13 +36,16 @@ const useAxios = <T>(
     }));
   };
   const catchError = (error: AxiosError) => {
+    if (abortController.current.signal.aborted) {
+      return;
+    }
+
     setMetadata((old) => ({
       ...old,
       isLoading: false,
       isError: true,
       error: error
     }));
-    queryInstance.current = null;
     errorStore.setError(error);
   };
   const success = (data: AxiosResponse<T>) => {
@@ -52,13 +55,13 @@ const useAxios = <T>(
       isSuccess: true,
       data
     }));
-    queryInstance.current = null;
   };
   const query = (customConfig: AxiosRequestConfig = {}) => {
-    if (!queryInstance.current) {
+    if (!metadata.isLoading) {
       let newConfig = {
         ...(typeof config === 'string' ? { url: config } : config),
-        ...customConfig
+        ...customConfig,
+        signal: abortController.current.signal
       };
 
       if (BASE_URL) {
@@ -69,16 +72,12 @@ const useAxios = <T>(
       }
 
       fetching();
-
-      if (instance) {
-        queryInstance.current = instance(newConfig);
-      } else {
-        queryInstance.current = axios(newConfig);
-      }
-
-      queryInstance.current.then(success).catch(catchError);
+      (instance || axios)(newConfig).then(success).catch(catchError);
     }
   };
+  const abort = () => abortController.current.abort();
+
+  useEffect(() => () => abort(), []);
 
   return {
     ...metadata,
