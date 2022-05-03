@@ -1,6 +1,6 @@
 import { authReducer, initialState } from './auth.reducer';
-import { useStore } from 'shared/hooks';
 import AuthAction from './auth.actions';
+import useStore from '../useStore';
 
 const useAuthStore = () => {
   const { data, ...allProps } = useStore(

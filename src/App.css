@@ -9,12 +9,26 @@
   font-size: var(--font-size);
 }
 
+.App-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.App-header a {
+  color: aqua;
+  padding: 10px 5px;
+}
+
+.App-header a:hover {
+  background-color: rgba(255, 0, 255, .2);
+}
+
 .store {
   display: flex;
   align-items: flex-start;
 }
 
-.store > * {
+.store>* {
   display: flex;
   flex-direction: column;
 }

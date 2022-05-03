@@ -1,4 +1,6 @@
+import { AxiosError } from 'axios';
+
 export interface IErrorState {
   hasError: boolean;
-  message: string | null;
+  error: AxiosError | Error | null;
 }

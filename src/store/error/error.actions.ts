@@ -1,9 +1,10 @@
+import { AxiosError } from 'axios';
 import { ErrorType } from './error.types';
 
-const setError = (message: string) =>
+const setError = (error: AxiosError | Error) =>
   ({
     type: ErrorType.SET_ERROR,
-    message
+    error
   } as const);
 const clear = () =>
   ({

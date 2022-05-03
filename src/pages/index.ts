@@ -1,2 +1,2 @@
-export { default as ProtectedPage } from './Protected/Protected';
-export { default as HomePage } from './Home/Home';
+export { default as ProtectedPage } from './ProtectedPage/ProtectedPage';
+export { default as HomePage } from './HomePage/HomePage';

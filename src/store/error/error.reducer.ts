@@ -3,7 +3,7 @@ import { IErrorState } from './error.interfaces';
 
 export const initialState: IErrorState = {
   hasError: false,
-  message: null
+  error: null
 };
 export const errorReducer = (
   prevState: IErrorState,
@@ -14,13 +14,13 @@ export const errorReducer = (
       return {
         ...prevState,
         hasError: true,
-        message: action.message
+        error: action.error
       };
     case ErrorType.CLEAR_ERROR:
       return {
         ...prevState,
         hasError: false,
-        message: null
+        error: null
       };
     default:
       return { ...prevState };

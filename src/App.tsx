@@ -1,25 +1,26 @@
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 
 import { ProtectedRoute } from 'shared/components';
+import Modal from 'shared/components/Modal/Modal';
 import { HomePage, ProtectedPage } from 'pages';
 import { useErrorStore } from 'store/error';
 
 import './App.css';
-import Modal from 'shared/components/Modal/Modal';
 
 const App = () => {
   console.log('Render: App');
 
-  const navigate = useNavigate();
-  const error = useErrorStore();
+  const errorStore = useErrorStore();
 
   return (
     <>
       <div className="App">
         <header className="App-header">
-          <button onClick={() => navigate('/')}>To home</button>
-          <button onClick={() => navigate('/protected')}>To protected</button>
-          <button onClick={() => error.setError('Error')}>Get error</button>
+          <Link to="/">To home</Link>
+          <Link to="/protected">To protected</Link>
+          <button onClick={() => errorStore.setError(new Error('Error'))}>
+            Get error
+          </button>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route element={<ProtectedRoute />}>
@@ -28,8 +29,8 @@ const App = () => {
           </Routes>
         </header>
       </div>
-      <Modal open={error.hasError} onClose={error.clear}>
-        {error.message}
+      <Modal open={errorStore.hasError} onClose={errorStore.clear}>
+        {errorStore.error?.message}
       </Modal>
     </>
   );

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BehaviorSubject } from 'rxjs';
 
-import { ActionsType, ActionType } from 'store/store.types';
+import { ActionsType, ActionType } from './store.types';
 
 const stores: { [key: string]: BehaviorSubject<any> } = {};
 
