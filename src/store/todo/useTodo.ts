@@ -1,18 +1,14 @@
-import { BehaviorSubject } from 'rxjs';
-
 import { initialState, todoReducer } from './todo.reducer';
-import { ActionAsync, ActionSync } from './todo.actions';
+import TodoAction from './todo.actions';
 import { useStore } from 'shared/hooks';
 
-const todos = new BehaviorSubject(initialState);
-
-const useTodo = () => {
+const useTodoStore = () => {
   return useStore(
-    todos,
+    'todos',
     todoReducer,
-    { ...ActionAsync, ...ActionSync },
+    TodoAction,
     initialState
   );
 };
 
-export default useTodo;
+export default useTodoStore;

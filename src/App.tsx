@@ -1,50 +1,30 @@
-import Dropdown, { IDropdownList } from './shared/components/Dropdown/Dropdown';
-import { Calendar, TestQuery } from './shared/components';
-
-import './App.css';
-import { ErrorBoundary, TestStore } from 'components';
 import { useState } from 'react';
 
-const list: IDropdownList[] = [
-  { value: 1 },
-  {
-    value: 2,
-    list: [
-      { value: 3 },
-      {
-        value: 4,
-        list: [{ value: 5 }]
-      }
-    ]
-  },
-  { value: 3 }
-];
+import { TestStore } from 'components';
+
+import './App.css';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { ProtectedRoute } from 'shared/components';
+import { HomePage, ProtectedPage } from 'pages';
 
 const App = () => {
   console.log('Render: App');
 
-  const [openNewStore, setOpenNewStore] = useState(false);
+  const navigate = useNavigate();
 
   return (
-    <ErrorBoundary>
-      <div className="App">
-        <header className="App-header">
-          <div className="store">
-            <TestStore name="store 1" />
-            <TestStore name="store 2" />
-            {openNewStore && <TestStore name="store 3" />}
-            {!openNewStore && (
-              <button onClick={() => setOpenNewStore(true)}>
-                Open new component with store
-              </button>
-            )}
-          </div>
-          <TestQuery />
-          <Dropdown list={list}>drop</Dropdown>
-          <Calendar />
-        </header>
-      </div>
-    </ErrorBoundary>
+    <div className="App">
+      <header className="App-header">
+        <button onClick={() => navigate('/')}>To home</button>
+        <button onClick={() => navigate('/protected')}>To protected</button>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/protected" element={<ProtectedPage />} />
+          </Route>
+        </Routes>
+      </header>
+    </div>
   );
 };
 

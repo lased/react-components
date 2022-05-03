@@ -1,58 +1,46 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
 import { useEffect, useState } from 'react';
+import { BehaviorSubject } from 'rxjs';
 
-import { ActionType } from 'store/store.types';
+import { ActionsType, ActionType } from 'store/store.types';
 
-type Actions<T> = T extends { [key: string]: (...args: any) => any }
-  ? T
-  : never;
+const stores: { [key: string]: BehaviorSubject<any> } = {};
 
 const useStore = <S, A>(
-  store: Subject<S> | BehaviorSubject<S> | ReplaySubject<S>,
+  storeName: string,
   reducer: (state: S, action: any) => S,
-  actions: Actions<A>,
+  actions: ActionsType<A>,
   initialState: S
 ) => {
   const [data, setData] = useState(initialState);
-  const [error, setError] = useState(null);
 
   const actionKeys = Object.keys(actions);
   const wrapActions = actionKeys.reduce(
     (acc, action) => ({
       ...acc,
       [action]: (...args: any[]) => {
-        const result = actions[action](...args);
-
-        if (result instanceof Promise) {
-          result.then((action) => nextData(action)).catch(setError);
-        } else {
-          nextData(result);
-        }
+        nextData(actions[action](...args));
       }
     }),
     {} as A
   );
 
-  const nextData = (action: ReturnType<ActionType<Actions<A>>>) =>
-    store.next(reducer(data, action));
+  const nextData = (action: ReturnType<ActionType<ActionsType<A>>>) => {
+    stores[storeName].next(reducer(data, action));
+  };
 
   useEffect(() => {
-    const subscription$ = store.subscribe(setData);
+    if (!stores[storeName]) {
+      stores[storeName] = new BehaviorSubject(initialState);
+    }
+
+    const subscription$ = stores[storeName].subscribe(setData);
 
     return () => subscription$.unsubscribe();
   }, []);
-  useEffect(() => {
-    if (error) {
-      setError(null);
-      throw new Error('Error');
-    }
-  }, [error]);
 
   return {
     ...wrapActions,
-    data,
-    error
+    data
   };
 };
 
