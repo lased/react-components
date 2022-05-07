@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from 'axios';
 
-import { useAxios } from '../useAxios';
+import useAxios from './useAxios';
 
 const useMutation = <T>(config: string | AxiosRequestConfig) => {
   const { query, ...axios } = useAxios<T>(config);

@@ -2,17 +2,17 @@ import { useEffect, useState } from 'react';
 import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { useAuthStore } from 'store/auth';
-import { useMutation } from 'shared/hooks';
+import { useAxios } from 'shared/hooks';
 
 const ProtectedRoute = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { isLoggedIn, login } = useAuthStore();
   const location = useLocation();
   const navigate = useNavigate();
-  const query = useMutation('/delay/3');
+  const query = useAxios('/delay/3');
 
   useEffect(() => {
-    !isLoggedIn && query.mutate();
+    !isLoggedIn && query.query();
   }, []);
   useEffect(() => {
     if (query.isError) {
@@ -23,7 +23,7 @@ const ProtectedRoute = () => {
       login('token');
       setIsLoading(false);
     }
-  }, [query]);
+  }, [query.isSuccess, query.isError]);
 
   if (isLoading) {
     return <strong>Loading...</strong>;

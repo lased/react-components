@@ -1,8 +1,8 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { useEffect } from 'react';
-import { useAuthStore } from 'store/auth';
 
-import useAxios from '../useAxios/useAxios';
+import { useAuthStore } from 'store/auth';
+import useAxios from './useAxios';
 
 const axiosPrivate = axios.create({ withCredentials: true });
 

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { AxiosRequestConfig } from 'axios';
 
-import { useAxios } from '../useAxios';
+import useAxiosPrivate from './useAxiosPrivate';
 
-const useQuery = <T>(
+const useQueryPrivate = <T>(
   config: string | AxiosRequestConfig,
   depends = [] as React.DependencyList
 ) => {
   const [counter, setCounter] = useState(0);
-  const { query, ...axios } = useAxios<T>(config);
+  const { query, ...axios } = useAxiosPrivate<T>(config);
 
   const refetch = () => {
     if (!axios.isLoading) {
@@ -26,4 +26,4 @@ const useQuery = <T>(
   };
 };
 
-export default useQuery;
+export default useQueryPrivate;

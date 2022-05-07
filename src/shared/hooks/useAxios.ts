@@ -1,7 +1,6 @@
 import axios, {
   AxiosError,
   AxiosInstance,
-  AxiosPromise,
   AxiosRequestConfig,
   AxiosResponse
 } from 'axios';
@@ -23,7 +22,7 @@ const useAxios = <T>(
     data: null as AxiosResponse<T> | null
   });
   const errorStore = useErrorStore();
-  const abortController = useRef(new AbortController());
+  const abortController = useRef<AbortController | null>(null);
 
   const fetching = () => {
     setMetadata((old) => ({
@@ -36,7 +35,12 @@ const useAxios = <T>(
     }));
   };
   const catchError = (error: AxiosError) => {
-    if (abortController.current.signal.aborted) {
+    if (abortController.current?.signal.aborted) {
+      setMetadata((old) => ({
+        ...old,
+        isLoading: false
+      }));
+
       return;
     }
 
@@ -58,6 +62,8 @@ const useAxios = <T>(
   };
   const query = (customConfig: AxiosRequestConfig = {}) => {
     if (!metadata.isLoading) {
+      abortController.current = new AbortController();
+
       let newConfig = {
         ...(typeof config === 'string' ? { url: config } : config),
         ...customConfig,
@@ -75,13 +81,14 @@ const useAxios = <T>(
       (instance || axios)(newConfig).then(success).catch(catchError);
     }
   };
-  const abort = () => abortController.current.abort();
+  const abort = () => abortController.current?.abort();
 
   useEffect(() => () => abort(), []);
 
   return {
     ...metadata,
-    query
+    query,
+    abort
   };
 };
 

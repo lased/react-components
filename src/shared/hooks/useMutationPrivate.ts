@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from 'axios';
 
-import { useAxiosPrivate } from '../useAxiosPrivate';
+import useAxiosPrivate from './useAxiosPrivate';
 
 const useMutationPrivate = <T>(config: string | AxiosRequestConfig) => {
   const { query, ...axios } = useAxiosPrivate<T>(config);
