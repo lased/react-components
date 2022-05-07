@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 import { useAuthStore } from 'store/auth';
 import { useAxios } from 'shared/hooks';
@@ -12,7 +12,11 @@ const ProtectedRoute = () => {
   const query = useAxios('/delay/3');
 
   useEffect(() => {
-    !isLoggedIn && query.query();
+    if (!isLoggedIn) {
+      query.query();
+    } else {
+      setIsLoading(false);
+    }
   }, []);
   useEffect(() => {
     if (query.isError) {

@@ -3,7 +3,9 @@ import { BehaviorSubject } from 'rxjs';
 
 import { ActionsType, ActionType } from './store.types';
 
-const stores: { [key: string]: BehaviorSubject<any> } = {};
+const stores: {
+  [key: string]: BehaviorSubject<any>;
+} = {};
 
 const useStore = <S, A>(
   storeName: string,
@@ -11,7 +13,9 @@ const useStore = <S, A>(
   actions: ActionsType<A>,
   initialState: S
 ) => {
-  const [data, setData] = useState(initialState);
+  const [state, setState] = useState<S>(
+    stores[storeName]?.getValue() || initialState
+  );
 
   const actionKeys = Object.keys(actions);
   const wrapActions = actionKeys.reduce(
@@ -25,7 +29,7 @@ const useStore = <S, A>(
   );
 
   const nextData = (action: ReturnType<ActionType<ActionsType<A>>>) => {
-    stores[storeName].next(reducer(data, action));
+    stores[storeName].next(reducer(state, action));
   };
 
   useEffect(() => {
@@ -33,14 +37,14 @@ const useStore = <S, A>(
       stores[storeName] = new BehaviorSubject(initialState);
     }
 
-    const subscription$ = stores[storeName].subscribe(setData);
+    const subscription$ = stores[storeName].subscribe(setState);
 
     return () => subscription$.unsubscribe();
   }, []);
 
   return {
     ...wrapActions,
-    data
+    state
   };
 };
 

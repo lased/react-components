@@ -3,7 +3,7 @@ import ErrorAction from './error.actions';
 import useStore from '../useStore';
 
 const useErrorStore = () => {
-  const { data, ...allProps } = useStore(
+  const { state, ...allProps } = useStore(
     'error',
     errorReducer,
     ErrorAction,
@@ -12,7 +12,7 @@ const useErrorStore = () => {
 
   return {
     ...allProps,
-    ...data
+    ...state
   };
 };
 

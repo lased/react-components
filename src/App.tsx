@@ -1,8 +1,7 @@
 import { Link, Route, Routes } from 'react-router-dom';
 
-import { ProtectedRoute } from 'shared/components';
-import Modal from 'shared/components/Modal/Modal';
-import { HomePage, ProtectedPage } from 'pages';
+import { Modal, ProtectedRoute } from 'shared/components';
+import { HomePage, LoginPage, ProtectedPage } from 'pages';
 import { useErrorStore } from 'store/error';
 
 import './App.css';
@@ -18,11 +17,9 @@ const App = () => {
         <header className="App-header">
           <Link to="/">To home</Link>
           <Link to="/protected">To protected</Link>
-          <button onClick={() => errorStore.setError(new Error('Error'))}>
-            Get error
-          </button>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="login" element={<LoginPage />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/protected" element={<ProtectedPage />} />
             </Route>

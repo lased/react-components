@@ -3,7 +3,7 @@ import AuthAction from './auth.actions';
 import useStore from '../useStore';
 
 const useAuthStore = () => {
-  const { data, ...allProps } = useStore(
+  const { state, ...allProps } = useStore(
     'auth',
     authReducer,
     AuthAction,
@@ -12,7 +12,7 @@ const useAuthStore = () => {
 
   return {
     ...allProps,
-    ...data
+    ...state
   };
 };
 

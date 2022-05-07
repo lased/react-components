@@ -51,6 +51,8 @@ const useAxios = <T>(
       error: error
     }));
     errorStore.setError(error);
+
+    return error;
   };
   const success = (data: AxiosResponse<T>) => {
     setMetadata((old) => ({
@@ -59,6 +61,8 @@ const useAxios = <T>(
       isSuccess: true,
       data
     }));
+
+    return data;
   };
   const query = (customConfig: AxiosRequestConfig = {}) => {
     if (!metadata.isLoading) {
@@ -78,7 +82,8 @@ const useAxios = <T>(
       }
 
       fetching();
-      (instance || axios)(newConfig).then(success).catch(catchError);
+      
+      return (instance || axios)(newConfig).then(success).catch(catchError);
     }
   };
   const abort = () => abortController.current?.abort();

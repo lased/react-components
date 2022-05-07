@@ -21,7 +21,7 @@ const TestStore = ({ name }: { name: string }) => {
     getTodoAsync();
   };
   const createTodo = () => {
-    const newTodo: ITodo = { id: todo.data.length + 2, title: '' };
+    const newTodo: ITodo = { id: todo.state.length + 2, title: '' };
 
     todo.createTodo({
       ...newTodo,
@@ -29,7 +29,7 @@ const TestStore = ({ name }: { name: string }) => {
     });
   };
   const deleteTodo = () =>
-    todo.data.length && todo.deleteTodo(todo.data[todo.data.length - 1].id);
+    todo.state.length && todo.deleteTodo(todo.state[todo.state.length - 1].id);
 
   return (
     <div>
@@ -37,7 +37,7 @@ const TestStore = ({ name }: { name: string }) => {
       <button onClick={createTodo}>Create todo</button>
       <button onClick={deleteTodo}>Delete todo random</button>
 
-      {todo.data.map((t, i) => (
+      {todo.state.map((t, i) => (
         <p key={i}>
           {t.id} - {t.title}
         </p>

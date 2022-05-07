@@ -1,12 +1,14 @@
+import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from 'store/auth';
 
 const HomePage = () => {
   console.log('Render: Home');
 
-  const { isLoggedIn } = useAuthStore();
+  const { isLoggedIn, logout } = useAuthStore();
+  const navigate = useNavigate();
 
-  const onLoginHandler = () => {};
-  const onLogoutHandler = () => {};
+  const onLoginHandler = () => navigate('/login');
+  const onLogoutHandler = () => logout();
 
   return (
     <div>
