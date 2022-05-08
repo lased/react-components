@@ -1,5 +1,8 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 import { useAuthStore } from 'store/auth';
+
+import './HomePage.css';
 
 const HomePage = () => {
   console.log('Render: Home');
@@ -11,14 +14,15 @@ const HomePage = () => {
   const onLogoutHandler = () => logout();
 
   return (
-    <div>
-      <p>Home</p>
+    <section className="home-page">
+      <header>Home page</header>
+      <Link to="/protected">To protected</Link>
       {!isLoggedIn ? (
         <button onClick={onLoginHandler}>Login</button>
       ) : (
         <button onClick={onLogoutHandler}>Logout</button>
       )}
-    </div>
+    </section>
   );
 };
 

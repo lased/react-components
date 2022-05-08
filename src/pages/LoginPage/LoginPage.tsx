@@ -1,5 +1,5 @@
 import { ChangeEvent, SyntheticEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useAuthService } from 'services';
 
@@ -9,6 +9,7 @@ const LoginPage = () => {
   const [fields, setFields] = useState({ username: '', password: '' });
   const { login, loginMutation } = useAuthService();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -16,10 +17,13 @@ const LoginPage = () => {
     setFields((oldFileds) => ({ ...oldFileds, [name]: value }));
   };
   const onSubmitHandler = async (event: SyntheticEvent) => {
+    const prevPage = (location.state && (location.state as any).from) || '/';
+
     event.preventDefault();
     await login(fields.username, fields.password);
-    navigate('/');
+    navigate(prevPage, { replace: true });
   };
+
   return (
     <form className="login" onSubmit={onSubmitHandler}>
       <header>Login</header>
@@ -35,9 +39,17 @@ const LoginPage = () => {
         placeholder="Password"
         onChange={onChangeHandler}
       />
-      <button type="submit" disabled={loginMutation.isLoading}>
-        Submit
-      </button>
+      <footer>
+        <button
+          disabled={loginMutation.isLoading}
+          onClick={() => navigate('/')}
+        >
+          Back
+        </button>
+        <button type="submit" disabled={loginMutation.isLoading}>
+          Submit
+        </button>
+      </footer>
     </form>
   );
 };

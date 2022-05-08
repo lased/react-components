@@ -1,22 +1,31 @@
-import { Link, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import { Modal, ProtectedRoute } from 'shared/components';
 import { HomePage, LoginPage, ProtectedPage } from 'pages';
 import { useErrorStore } from 'store/error';
 
 import './App.css';
+import { useEffect } from 'react';
 
 const App = () => {
   console.log('Render: App');
 
   const errorStore = useErrorStore();
 
+  useEffect(() => {
+    const callback: any = (error: ErrorEvent) => {
+      errorStore.setError(new Error(error.message));
+    };
+
+    window.addEventListener('error', callback);
+
+    return () => window.removeEventListener('error', callback);
+  }, []);
+
   return (
     <>
       <div className="App">
         <header className="App-header">
-          <Link to="/">To home</Link>
-          <Link to="/protected">To protected</Link>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="login" element={<LoginPage />} />

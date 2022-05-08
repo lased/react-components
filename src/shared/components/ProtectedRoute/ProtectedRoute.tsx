@@ -9,7 +9,7 @@ const ProtectedRoute = () => {
   const { isLoggedIn, login } = useAuthStore();
   const location = useLocation();
   const navigate = useNavigate();
-  const query = useAxios('/delay/3');
+  const query = useAxios('/delays/3');
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -20,7 +20,7 @@ const ProtectedRoute = () => {
   }, []);
   useEffect(() => {
     if (query.isError) {
-      navigate('/', { replace: true });
+      navigate('/login', { state: { from: location } });
       setIsLoading(false);
     }
     if (query.isSuccess) {
@@ -37,7 +37,7 @@ const ProtectedRoute = () => {
     return <Outlet />;
   }
 
-  return <Navigate to="/" state={{ from: location }} replace />;
+  return <Navigate to="/login" state={{ from: location }} />;
 };
 
 export default ProtectedRoute;

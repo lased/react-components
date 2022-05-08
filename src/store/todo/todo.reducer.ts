@@ -1,18 +1,24 @@
-import Actions from './todo.actions';
+import { createEntityAdapter } from 'shared/helpers';
 import { ActionType } from '../store.types';
 import { TodoType } from './todo.types';
+import Actions from './todo.actions';
 import { ITodo } from 'models/Todo';
 
-export const initialState = [] as ITodo[];
+const todoAdapter = createEntityAdapter<ITodo>();
+
+export const initialState: ITodo[] = [
+  { id: 1, title: 'Todo 1' },
+  { id: 3, title: 'Todo 3' }
+];
 export const todoReducer = (
   prevState: ITodo[],
   action: ReturnType<ActionType<typeof Actions>>
 ) => {
   switch (action.type) {
     case TodoType.CREATE_TODO:
-      return [...prevState, action.todo];
+      return todoAdapter.add(prevState, action.todo);
     case TodoType.DELETE_TODO:
-      return prevState.filter((todo) => todo.id !== action.id);
+      return todoAdapter.remove(prevState, action.id);
 
     default:
       return [...prevState];
