@@ -1,18 +1,31 @@
 /* https://tailwindcolor.com */
 :root {
-    --blue-gray-color-50: #f8fafc;
-    --blue-gray-color-100: #F1F5F9;
-    --blue-gray-color-200: #E2E8F0;
-    --blue-gray-color-300: #CBD5E1;
-    --blue-gray-color-400: #94A3B8;
-    --blue-gray-color-500: #64748b;
-    --blue-gray-color-600: #475569;
-    --blue-gray-color-700: #334155;
-    --blue-gray-color-800: #1e293b;
-    --blue-gray-color-900: #0f172a;
-  
-    --font-size: 16px;
-    --text-color-50: var(--blue-gray-color-50);
+  --blue-gray-color-50: #f8fafc;
+  --blue-gray-color-100: #f1f5f9;
+  --blue-gray-color-200: #e2e8f0;
+  --blue-gray-color-300: #cbd5e1;
+  --blue-gray-color-400: #94a3b8;
+  --blue-gray-color-500: #64748b;
+  --blue-gray-color-600: #475569;
+  --blue-gray-color-700: #334155;
+  --blue-gray-color-800: #1e293b;
+  --blue-gray-color-900: #0f172a;
 
-    --modal-content-background: var(--blue-gray-color-200);
-  }
+  --font-size: 16px;
+  --text-color-50: var(--blue-gray-color-50);
+  --border-radius: 4px;
+
+  --modal-content-background: var(--blue-gray-color-200);
+
+  --snackbar-default-background: var(--blue-gray-color-700);
+  --snackbar-default-color: var(--blue-gray-color-50);
+
+  --alert-error-background: rgb(211, 47, 47);
+  --alert-error-color: #fff;
+  --alert-warning-background: rgb(245, 124, 0);
+  --alert-warning-color: #fff;
+  --alert-info-background: rgb(2, 136, 209);
+  --alert-info-color: #fff;
+  --alert-success-background: rgb(56, 142, 60);
+  --alert-success-color: #fff;
+}

@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 
-import { Modal, ProtectedRoute } from 'shared/components';
+import { Alert, ProtectedRoute, Snackbar } from 'shared/components';
 import { HomePage, LoginPage, ProtectedPage } from 'pages';
 import { useErrorStore } from 'store/error';
 
@@ -35,9 +35,13 @@ const App = () => {
           </Routes>
         </header>
       </div>
-      <Modal open={errorStore.hasError} onClose={errorStore.clear}>
-        {errorStore.error?.message}
-      </Modal>
+      <Snackbar
+        open={errorStore.hasError}
+        onClose={errorStore.clear}
+        autoHideDuration={6000}
+      >
+        <Alert variant="error">{errorStore.error?.message}</Alert>
+      </Snackbar>
     </>
   );
 };

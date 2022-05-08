@@ -1,0 +1,45 @@
+.snackbar {
+  position: absolute;
+  box-shadow: rgb(0 0 0 / 20%) 0px 3px 5px -1px,
+    rgb(0 0 0 / 14%) 0px 6px 10px 0px, rgb(0 0 0 / 12%) 0px 1px 18px 0px;
+  border-radius: var(--border-radius);
+}
+
+.snackbar-message {
+  padding: 6px 16px;
+  background-color: var(--snackbar-default-background);
+  color: var(--snackbar-default-color);
+}
+
+.snackbar .snackbar__close {
+  background: transparent;
+  color: inherit;
+  margin-left: 10px;
+  padding: 8px;
+  border-radius: var(--border-radius);
+}
+
+.snackbar .snackbar__close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.snackbar[data-horizontal='left'] {
+  left: 24px;
+  right: auto;
+}
+.snackbar[data-horizontal='center'] {
+  left: 50%;
+  transform: translateX(-50%);
+}
+.snackbar[data-horizontal='right'] {
+  right: 24px;
+  left: auto;
+}
+.snackbar[data-vertical='top'] {
+  top: 24px;
+  bottom: auto;
+}
+.snackbar[data-vertical='bottom'] {
+  bottom: 24px;
+  top: auto;
+}
