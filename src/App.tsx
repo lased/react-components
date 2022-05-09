@@ -1,18 +1,31 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 import { Alert, ProtectedRoute, Snackbar } from 'shared/components';
 import { HomePage, LoginPage, ProtectedPage } from 'pages';
 import { useErrorStore } from 'store/error';
+import { useAxios } from 'shared/hooks';
 
 import './App.css';
-import { useEffect } from 'react';
+import { useAuthStore } from 'store/auth';
 
 const App = () => {
   console.log('Render: App');
 
+  const [isLoading, setIsLoading] = useState(true);
+  const { isLoggedIn, login } = useAuthStore();
   const errorStore = useErrorStore();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const refresh = useAxios<{ accessToken: string }>('/auth/refresh');
 
   useEffect(() => {
+    if (!isLoggedIn) {
+      refresh.query();
+    } else {
+      setIsLoading(false);
+    }
+
     const callback: any = (error: ErrorEvent) => {
       errorStore.setError(new Error(error.message));
     };
@@ -21,6 +34,22 @@ const App = () => {
 
     return () => window.removeEventListener('error', callback);
   }, []);
+  useEffect(() => {
+    if (refresh.isError) {
+      navigate('/login', { state: { from: location } });
+      setIsLoading(false);
+    }
+    if (refresh.isSuccess && refresh.data) {
+      login(refresh.data?.data.accessToken);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
+    }
+  }, [refresh.isSuccess, refresh.isError]);
+
+  if (isLoading) {
+    return <strong>Loading...</strong>;
+  }
 
   return (
     <>

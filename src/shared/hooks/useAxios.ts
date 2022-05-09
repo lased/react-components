@@ -71,7 +71,8 @@ const useAxios = <T>(
       let newConfig = {
         ...(typeof config === 'string' ? { url: config } : config),
         ...customConfig,
-        signal: abortController.current.signal
+        signal: abortController.current.signal,
+        withCredentials: true
       };
 
       if (BASE_URL) {
@@ -82,7 +83,7 @@ const useAxios = <T>(
       }
 
       fetching();
-      
+
       return (instance || axios)(newConfig).then(success).catch(catchError);
     }
   };

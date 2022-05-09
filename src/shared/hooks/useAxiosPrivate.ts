@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useAuthStore } from 'store/auth';
 import useAxios from './useAxios';
 
-const axiosPrivate = axios.create({ withCredentials: true });
+const axiosPrivate = axios.create();
 
 const useAxiosPrivate = <T>(config: string | AxiosRequestConfig) => {
   const axios = useAxios<T>(config, axiosPrivate);
