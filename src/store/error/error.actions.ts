@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { ErrorType } from './error.types';
 
-const setError = (error: AxiosError | Error) =>
+const setError = (error: AxiosError<{ message: string }> | Error) =>
   ({
     type: ErrorType.SET_ERROR,
     error

@@ -21,11 +21,11 @@ const TestStore = ({ name }: { name: string }) => {
     getTodoAsync();
   };
   const createTodo = () => {
-    const newTodo: ITodo = { id: todo.state.length + 2, title: '' };
+    const newTodo: ITodo = { id: todo.state.length + 2, name: '' };
 
     todo.createTodo({
       ...newTodo,
-      title: `Todo ${newTodo.id}`
+      name: `Todo ${newTodo.id}`
     });
   };
   const deleteTodo = () =>
@@ -35,11 +35,11 @@ const TestStore = ({ name }: { name: string }) => {
     <div>
       <button onClick={getTodo}>Get todo async</button>
       <button onClick={createTodo}>Create todo</button>
-      <button onClick={deleteTodo}>Delete todo random</button>
+      <button onClick={deleteTodo}>Delete last todo</button>
 
       {todo.state.map((t, i) => (
         <p key={i}>
-          {t.id} - {t.title}
+          {t.id} - {t.name}
         </p>
       ))}
     </div>

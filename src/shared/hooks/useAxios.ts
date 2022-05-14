@@ -19,10 +19,11 @@ const useAxios = <T>(
     isLoading: false,
     isError: false,
     error: null as any | null,
-    data: null as AxiosResponse<T> | null
+    data: null as T | null
   });
   const errorStore = useErrorStore();
   const abortController = useRef<AbortController | null>(null);
+  const prevRequest = useRef<Promise<T>>();
 
   const fetching = () => {
     setMetadata((old) => ({
@@ -35,34 +36,31 @@ const useAxios = <T>(
     }));
   };
   const catchError = (error: AxiosError) => {
-    if (abortController.current?.signal.aborted) {
+    if (!abortController.current?.signal.aborted) {
       setMetadata((old) => ({
         ...old,
-        isLoading: false
+        isError: true,
+        error: error
       }));
-
-      return;
+      errorStore.setError(error);
     }
 
-    setMetadata((old) => ({
-      ...old,
-      isLoading: false,
-      isError: true,
-      error: error
-    }));
-    errorStore.setError(error);
-
-    return error;
+    return Promise.reject(error);
   };
   const success = (data: AxiosResponse<T>) => {
     setMetadata((old) => ({
       ...old,
-      isLoading: false,
       isSuccess: true,
-      data
+      data: data.data
     }));
 
-    return data;
+    return Promise.resolve(data.data);
+  };
+  const finallyCallback = () => {
+    setMetadata((old) => ({
+      ...old,
+      isLoading: false
+    }));
   };
   const query = (customConfig: AxiosRequestConfig = {}) => {
     if (!metadata.isLoading) {
@@ -83,9 +81,13 @@ const useAxios = <T>(
       }
 
       fetching();
-
-      return (instance || axios)(newConfig).then(success).catch(catchError);
+      prevRequest.current = (instance || axios)(newConfig)
+        .then(success)
+        .catch(catchError)
+        .finally(finallyCallback);
     }
+
+    return prevRequest.current as Promise<T>;
   };
   const abort = () => abortController.current?.abort();
 

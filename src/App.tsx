@@ -39,8 +39,8 @@ const App = () => {
       navigate('/login', { state: { from: location } });
       setIsLoading(false);
     }
-    if (refresh.isSuccess && refresh.data) {
-      login(refresh.data?.data.accessToken);
+    if (refresh.isSuccess) {
+      refresh.data && login(refresh.data.accessToken);
       setTimeout(() => {
         setIsLoading(false);
       }, 1000);
@@ -69,7 +69,7 @@ const App = () => {
         onClose={errorStore.clear}
         autoHideDuration={6000}
       >
-        <Alert variant="error">{errorStore.error?.message}</Alert>
+        <Alert variant="error">{errorStore.message}</Alert>
       </Snackbar>
     </>
   );

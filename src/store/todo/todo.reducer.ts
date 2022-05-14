@@ -7,8 +7,8 @@ import { ITodo } from 'models/Todo';
 const todoAdapter = createEntityAdapter<ITodo>();
 
 export const initialState: ITodo[] = [
-  { id: 1, title: 'Todo 1' },
-  { id: 3, title: 'Todo 3' }
+  { id: 1, name: 'Todo 1' },
+  { id: 3, name: 'Todo 3' }
 ];
 export const todoReducer = (
   prevState: ITodo[],

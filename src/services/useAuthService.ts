@@ -15,7 +15,7 @@ const useAuthService = () => {
       password
     });
 
-    authStore.login(response.data.accessToken);
+    authStore.login(response.accessToken);
   };
 
   return { login, loginMutation };
