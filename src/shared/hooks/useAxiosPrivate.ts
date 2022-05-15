@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 
 import { useAuthStore } from 'store/auth';
 import useAxios from './useAxios';
+import { API } from 'api';
 
 type ResolveType = (token: string) => void;
 type ResolveAsyncType = (request: AxiosPromise) => void;
@@ -21,7 +22,7 @@ const useAxiosPrivate = <T>(config: string | AxiosRequestConfig) => {
   const axios = useAxios<T>(config, axiosPrivate);
   const authStore = useAuthStore();
 
-  const refresh = useAxios<{ accessToken: string }>('/auth/refresh');
+  const refresh = useAxios<{ accessToken: string }>(API.REFRESH_TOKEN);
 
   useEffect(() => {
     const requestInterceptor = axiosPrivate.interceptors.request.use(

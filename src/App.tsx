@@ -5,9 +5,10 @@ import { Alert, ProtectedRoute, Snackbar } from 'shared/components';
 import { HomePage, LoginPage, ProtectedPage } from 'pages';
 import { useErrorStore } from 'store/error';
 import { useAxios } from 'shared/hooks';
+import { useAuthStore } from 'store/auth';
+import { API } from 'api';
 
 import './App.css';
-import { useAuthStore } from 'store/auth';
 
 const App = () => {
   console.log('Render: App');
@@ -17,7 +18,7 @@ const App = () => {
   const errorStore = useErrorStore();
   const location = useLocation();
   const navigate = useNavigate();
-  const refresh = useAxios<{ accessToken: string }>('/auth/refresh');
+  const refresh = useAxios<{ accessToken: string }>(API.REFRESH_TOKEN);
 
   useEffect(() => {
     if (!isLoggedIn) {

@@ -5,21 +5,22 @@ import { useMutationPrivate, useQueryPrivate } from 'shared/hooks';
 import { TestStore } from './components';
 import { ITodo } from 'models/Todo';
 import { IUser } from 'models/User';
+import { API } from 'api';
 
 const ProtectedPage = () => {
   console.log('Render: Protected');
 
   const [openNewStore, setOpenNewStore] = useState(false);
-  const todosQuery = useQueryPrivate<ITodo[]>('/todos');
-  const usersQuery = useQueryPrivate<IUser[]>('/users');
+  const todosQuery = useQueryPrivate<ITodo[]>(API.TODOS);
+  const usersQuery = useQueryPrivate<IUser[]>(API.USERS);
   const createTodoMutation = useMutationPrivate<ITodo>({
     method: 'post',
-    url: '/todos'
+    url: API.TODOS
   });
 
   const createTodo = () => {
     createTodoMutation.mutate();
-  }
+  };
 
   return (
     <>
