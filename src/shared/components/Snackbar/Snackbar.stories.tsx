@@ -1,13 +1,16 @@
 import { ComponentStory } from '@storybook/react';
-import Alert from '../Alert/Alert';
+import { useArgs } from '@storybook/client-api';
 
-import Snackbar from './Snackbar';
 import { ISnackbarAnchorOrigin } from './Snackbar.interfaces';
+import Alert from '../Alert/Alert';
+import Snackbar from './Snackbar';
 
 export default {
   component: Snackbar,
   argTypes: {
-    open: { control: 'boolean', defaultValue: true },
+    open: { control: 'boolean', defaultValue: false },
+    autoHideDuration: { control: 'number' },
+    message: { control: 'string' },
     'anchorOrigin.vertical': {
       control: 'radio',
       options: ['top', 'bottom'],
@@ -21,29 +24,39 @@ export default {
   }
 };
 
-const Template: ComponentStory<typeof Snackbar> = (args: any) => {
+const Template: ComponentStory<typeof Snackbar> = () => {
+  const [
+    {
+      open,
+      onClose,
+      'anchorOrigin.horizontal': horizontal,
+      'anchorOrigin.vertical': vertical,
+      ...args
+    },
+    setArgs
+  ] = useArgs();
+
   const anchorOrigin: ISnackbarAnchorOrigin = {
-    vertical: args['anchorOrigin.vertical'],
-    horizontal: args['anchorOrigin.horizontal']
+    horizontal,
+    vertical
   };
 
   return (
-    <div style={{ position: 'relative' }}>
-      <Snackbar {...args} anchorOrigin={anchorOrigin} />
-    </div>
+    <>
+      <Snackbar
+        {...args}
+        open={open}
+        onClose={() => {
+          setArgs({ open: false });
+          onClose();
+        }}
+        anchorOrigin={anchorOrigin}
+      />
+    </>
   );
 };
 
-export const Position = Template.bind({});
-Position.args = {
-  message: 'Position'
-};
-
-export const WithChildren = Template.bind({});
-WithChildren.args = {
-  children: (
-    <Alert variant="error" action={<button>X</button>}>
-      Error
-    </Alert>
-  )
+export const Basic = Template.bind({});
+Basic.args = {
+  message: 'Basic snackbar'
 };

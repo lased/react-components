@@ -1,4 +1,4 @@
-import { CSSProperties, FC, MouseEvent, ReactNode } from 'react';
+import { FC, MouseEvent, ReactNode } from 'react';
 
 import DropdownList from './DropdownList';
 
