@@ -36,8 +36,8 @@ const Snackbar: FC<ISnackbarProps> = ({
         className,
         message && 'snackbar-message'
       ])}
-      data-horizontal={anchorOrigin.horizontal}
-      data-vertical={anchorOrigin.vertical}
+      data-horizontal={anchorOrigin?.horizontal || 'center'}
+      data-vertical={anchorOrigin?.vertical || 'bottom'}
     >
       {message ? message : children}
       {onClose && !children && (
