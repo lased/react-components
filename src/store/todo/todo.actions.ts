@@ -11,9 +11,15 @@ const deleteTodo = (id: number) =>
     type: TodoType.DELETE_TODO,
     id
   } as const);
+const setTodos = (todos: ITodo[]) =>
+  ({
+    type: TodoType.SET_TODOS,
+    todos
+  } as const);
 
 const TodoAction = {
   createTodo,
-  deleteTodo
+  deleteTodo,
+  setTodos
 };
 export default TodoAction;

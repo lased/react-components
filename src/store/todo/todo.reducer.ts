@@ -19,6 +19,8 @@ export const todoReducer = (
       return todoAdapter.add(prevState, action.todo);
     case TodoType.DELETE_TODO:
       return todoAdapter.remove(prevState, action.id);
+    case TodoType.SET_TODOS:
+      return [...action.todos];
 
     default:
       return [...prevState];
